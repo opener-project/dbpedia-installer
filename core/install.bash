@@ -6,6 +6,13 @@ SPOTLIGHTDIR="dbpedia-spotlight";
 
 cd ../../
 
+if [ $# -eq 0 ] || [ $# -eq 1 ]
+  then
+  echo "Not enough arguments supplied; Please supply -lang and index-lang.tgz path as arguments.
+        For example: ./install.bash es /home/user/index-es.tgz"
+  exit 1
+fi
+
 if [ -d $SPOTLIGHTDIR ]
 then
     echo "dbpedia spotlight already exists skipping the step of downloading it";
@@ -19,16 +26,17 @@ cd $SPOTLIGHTDIR
 if [ -e pom.xml.orig ]
 then
     echo "the original pom.xml files have been already replaced, skipping the replacement"
+    cd ..
 else
     mv pom.xml pom.xml.orig
     mv core/pom.xml core/pom.xml.orig
-    cd ../EHU-DBpedia-spotlight/core
-    cp pom.xml ../../dbpedia-spotlight/.
-    cp core/pom.xml ../../dbpedia-spotlight/core/.
-    cp conf/server_*.properties ../../dbpedia-spotlight/conf/.
+    cd ../EHU-DBpedia-Spotlight/core
+    cp pom.xml ../../dbpedia-spotlight/
+    cp core/pom.xml ../../dbpedia-spotlight/core/
+    cp conf/server_$LANG.properties ../../dbpedia-spotlight/conf/
+    cd ../../
 fi
 
-cd ../../
 cd $SPOTLIGHTDIR
 echo "installing the modified dbpedia spotlight"
 mvn clean install
@@ -51,16 +59,46 @@ fi
 cd data
 
 if [ -e index-$LANG.tgz ]
+
 then
     echo "unzipping index ..."
     tar xzvf index-$LANG.tgz
     echo "DONE"
 else
-    cd $SPOTLIGHTDIR
-    echo "Getting  index..."
-    mv $INDEX ./data/
+    cd ../
+    echo "Getting index..."
+    mv $INDEX data/
     cd data/
-    tar xvzf $INDEX
+    tar xvzf index-$LANG.tgz
+    echo "DONE"
+fi
+
+if [ -e index-$LANG.tar.gz ]
+
+then
+    echo "unzipping index ..."
+    tar xzvf index-$LANG.tar.gz
+    echo "DONE"
+else
+    cd ../
+    echo "Getting index..."
+    mv $INDEX data/
+    cd data/
+    tar xvzf index-$LANG.tar.gz
+    echo "DONE"
+fi
+
+if [ -e index-$LANG.zip ]
+then
+    echo "unzipping index ..."
+    unzip index-$LANG
+    echo "DONE"
+else
+    cd ../
+    echo "Getting index..."
+    mv $INDEX data/
+    cd data/
+    unzip index-$LANG
     echo "DONE"
 fi
 
