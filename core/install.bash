@@ -1,5 +1,7 @@
 #!/bin/bash
 
+LANG=$1
+INDEX=$2
 SPOTLIGHTDIR="dbpedia-spotlight";
 
 cd ..
@@ -23,8 +25,7 @@ else
     cd ../IXA-EHU-DBpedia-spotlight
     cp pom.xml ../dbpedia-spotlight/.
     cp core/pom.xml ../dbpedia-spotlight/core/.
-    cp conf/server_en.properties ../dbpedia-spotlight/conf/.
-    cp conf/server_es.properties ../dbpedia-spotlight/conf/.
+    cp conf/server_*.properties ../dbpedia-spotlight/conf/.
 fi
 
 cd ..
@@ -46,36 +47,21 @@ else
     mkdir data
     echo "making data directory"
 fi
+
 cd data
 
-if [ -e index-en.tgz ]
+if [ -e index-$LANG.tgz ]
 then
-    echo "unzipping English index..."
-    tar xzvf index-en.tgz
+    echo "unzipping index ..."
+    tar xzvf index-$LANG.tgz
     echo "DONE"
 else
-    echo "Getting English index..."
-    wget --no-check-certificate 'https://siuc05.si.ehu.es/~ragerri/index-spotlight/index-en.tgz'
-    tar xvzf index-en.tgz
+    cd $SPOTLIGHTDIR
+    echo "Getting  index..."
+    mv $INDEX ./data/
+    cd data/
+    tar xvzf $INDEX
     echo "DONE"
 fi
-
-if [ -e index-es.tgz ]
-then
-    echo "unzipping Spanish index..."
-    tar xzvf index-es.tgz
-    echo "DONE"
-else
-    echo "Getting Spanish index..."
-    wget --no-check-certificate 'https://siuc05.si.ehu.es/~ragerri/index-spotlight/index-es.tgz'
-    tar xvzf index-es.tgz
-    echo "DONE"
-fi
-
-echo "Finding pos-en-general-brown.HiddenMarkovModel..."
-cd ..
-find . -name "*pos-en-general-brown.HiddenMarkovModel*"
-echo "done"
-echo "Please change the server_en.properties and server_es.properties file to correctly point out to the current location of pos-en-general-brown.HiddenMarkovModel"
 
 echo "Installation completed."
