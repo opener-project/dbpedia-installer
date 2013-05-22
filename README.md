@@ -18,7 +18,7 @@ The contents of the repository are the following:
     + conf/ modified configuration files from the original DBpedia Spotlight
     + core/ modified source files from the original DBpedia Spotlight
     + install.bash script to install, modify, compile and create a binary of
-      the EHU-DBpedia-Spotlight
+      the original DBpedia Spotlight
     + pom.xml modified pom.xml to install DBpedia Spotlight
 
 - README.md: This README
