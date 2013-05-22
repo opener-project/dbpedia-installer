@@ -1,6 +1,6 @@
 # EHU-DBpedia-Spotlight
 
-This repository is contains the required changes to the original DBpedia Spotlight
+This repository contains the required changes to the original DBpedia Spotlight
 source code to be able to build your own DBpedia Spotlight for each language within
 the OpeNER project.
 
@@ -88,9 +88,13 @@ You will need to prepare the Disambiguation index following the instructions as 
 
 ### 5. Install and Modify DBpedia Spotlight for NED in OpeNER
 
-    sh install.bash
+    sh install.bash $lang index-$lang.tgz
 
-The script install.bash obtains the latest version of the DBpedia
+
+Where lang is one of (de|en|es|fr|it|nl) and index-$lang.tgz is the tar gzipped Lucene-based
+disambiguation index for DBpedia Spotlight generated as explained in previous point.
+
+The install.bash script obtains the latest version of the DBpedia
 Spotlight. It also performs the required modifications to be able to
 run a version of DBpedia Spotlight for any desired language. These are
 steps performed by the install.bash script:
