@@ -168,3 +168,10 @@ Once everything is correct, go to the conf directory and **run the server**:
 **Congratulations!!** You can now send queries to the running OpeNER dbpedia-spotlight server via the
 [EHU-ned_kernel module](https://github.com/opener-project/EHU-ned_kernel).
 
+#### Contact information
+
+    Rodrigo Agerri and Itziar Aldabe
+    {rodrigo.agerri,itziar.aldabe}@ehu.es
+    IXA NLP Group
+    University of the Basque Country (UPV/EHU)
+    E-20018 Donostia-San Sebastián
