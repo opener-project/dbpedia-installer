@@ -79,7 +79,7 @@ You should see reference to the MAVEN version you have just installed plus the J
 ### 3. Create Disambiguation Index
 
 You will need to prepare the Disambiguation index following the instructions as specified in the
-[Internationalization of DBpedia Spotlight for OpeNER](https://github.com/opener-project/EHU-DBpedia-Spotlight/wiki/DBpedia-Spotlight-Internationalization-for-OpeNER. )
+[Internationalization of DBpedia Spotlight for OpeNER](https://github.com/opener-project/EHU-DBpedia-Spotlight/wiki/DBpedia-Spotlight-Internationalization-for-OpeNER )
 
 
 ### 4. Get repository from github
