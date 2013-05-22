@@ -92,7 +92,7 @@ You will need to prepare the Disambiguation index following the instructions as 
 
 
 Where lang is one of (de|en|es|fr|it|nl) and index-$lang.tgz is the tar gzipped Lucene-based
-disambiguation index for DBpedia Spotlight generated as explained in previous point.
+disambiguation index for DBpedia Spotlight generated as explained in step 3. above.
 
 The install.bash script obtains the latest version of the DBpedia
 Spotlight. It also performs the required modifications to be able to
