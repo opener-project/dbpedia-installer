@@ -65,40 +65,9 @@ then
     tar xzvf index-$LANG.tgz
     echo "DONE"
 else
-    cd ../
-    echo "Getting index..."
-    mv $INDEX data/
-    cd data/
+    echo "Copying index..."
+    cp $INDEX .
     tar xvzf index-$LANG.tgz
-    echo "DONE"
-fi
-
-if [ -e index-$LANG.tar.gz ]
-
-then
-    echo "unzipping index ..."
-    tar xzvf index-$LANG.tar.gz
-    echo "DONE"
-else
-    cd ../
-    echo "Getting index..."
-    mv $INDEX data/
-    cd data/
-    tar xvzf index-$LANG.tar.gz
-    echo "DONE"
-fi
-
-if [ -e index-$LANG.zip ]
-then
-    echo "unzipping index ..."
-    unzip index-$LANG
-    echo "DONE"
-else
-    cd ../
-    echo "Getting index..."
-    mv $INDEX data/
-    cd data/
-    unzip index-$LANG
     echo "DONE"
 fi
 

@@ -88,7 +88,9 @@ You will need to prepare the Disambiguation index following the instructions as 
 
 ### 5. Install and Modify DBpedia Spotlight for NED in OpeNER
 
-    sh install.bash $lang index-$lang.tgz
+From the EHU-DBpedia-Spotlight/core/ directory run:
+
+    ./install.bash $lang index-$lang.tgz
 
 
 Where lang is one of (de|en|es|fr|it|nl) and index-$lang.tgz is the tar gzipped Lucene-based
