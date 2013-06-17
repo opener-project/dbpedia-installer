@@ -1,127 +1,71 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-set -e
+LANG=$1
+INDEX=$2
+SPOTLIGHTDIR="dbpedia-spotlight";
 
-##
-# Enters the directory given in the first argument and notifies the user about
-# this.
-#
-# @param [String] $1 The directory to change the current working directory to.
-#
-enter_directory()
-{
-    full_path=$(readlink -f $1)
+cd ..
 
-    echo "Changing PWD to ${full_path}"
-    cd $1
-}
-
-##
-# Shows the message passed as the first argument and terminates the script.
-#
-# @param [String] $1 The message to display.
-#
-abort()
-{
-    echo $1
-    exit 1
-}
-
-##
-# Copies over a file and backs up existing files. If a backup already exists
-# this function doesn't overwrite it again.
-#
-# @param [String] $1 The source file.
-# @param [String] $2 The destination file.
-#
-copy_file()
-{
-    if [[ ! -f "$2.orig" ]]
-    then
-        cp --backup --suffix=.orig -f $1 $2
-    else
-        "Backup file for ${2} already exists, ignoring"
-    fi
-}
-
-language=$1
-index=$2
-script_dir=$(dirname $(readlink -f $0))
-
-# DBpedia configuration settings, these should only be changed for new releases
-# of DBpedia.
-dbpedia_version="0.6"
-dbpedia_tar="release-${dbpedia_version}.tar.gz"
-dbpedia_url="https://github.com/dbpedia-spotlight/dbpedia-spotlight/archive/${dbpedia_tar}"
-dbpedia_dir="${script_dir}/dbpedia-spotlight"
-
-old_pwd=$(pwd)
-
-if [[ -z "${language}" ]]
-then
-    abort "You must specify a language as the first argument"
+if [ $# -eq 0 ] || [ $# -eq 1 ]
+  then
+  echo "Not enough arguments supplied; Please supply -lang and index-lang.tgz absolute path as arguments.
+        For example: ./install.bash es /home/user/index-es.tgz"
+  exit 1
 fi
 
-if [[ -z "${index}" ]]
+if [ -d $SPOTLIGHTDIR ]
 then
-    abort "You must specify an index file as the second argument"
-fi
-
-if [[ ! -f $index ]]
-then
-    abort "The index file ${index} does not exist"
-# Expand the (potential) relative path to the full path so we can be sure that
-# later on the right file is used.
+    echo "dbpedia spotlight already exists skipping the step of downloading it";
 else
-    index=$(readlink -f $index)
-    index_name=$(basename $index)
+    echo "downloading dbpedia spotlight";
+    git clone https://github.com/dbpedia-spotlight/dbpedia-spotlight.git
 fi
 
-if [[ ! -d $dbpedia_dir ]]
+cd $SPOTLIGHTDIR
+
+if [ -e pom.xml.orig ]
 then
-    echo 'dbpedia-spotlight directory does not exist, creating...'
-
-    if ! hash git 2>/dev/null
-    then
-        abort 'Git (http://git-scm.com/) is not installed, aborting...'
-    fi
-
-    wget $dbpedia_url
-
-    tar -xvf $dbpedia_tar --directory=$script_dir
-
-    mv $script_dir/dbpedia-spotlight-release-$dbpedia_version \
-        $script_dir/dbpedia-spotlight
-
-    rm $dbpedia_tar
+    echo "the original pom.xml files have been already replaced, skipping the replacement"
+    cd ..
+else
+    cp pom.xml pom.xml.orig
+    cd ../ixa-dbpedia-spotlight
+    cp conf/server_$LANG.properties ../dbpedia-spotlight/conf/
+    cd ..
 fi
 
-echo 'Copying Maven configuration files to the dbpedia-spotlight directory...'
-
-copy_file "${script_dir}/pom.xml" $dbpedia_dir
-copy_file "${script_dir}/core/pom.xml" "${dbpedia_dir}/core"
-
-copy_file "${script_dir}/conf/server_${language}.properties" \
-    "${dbpedia_dir}/conf"
-
-echo 'Installing dependencies for all Maven projects...'
-enter_directory $dbpedia_dir
+cd $SPOTLIGHTDIR
+echo "installing the modified dbpedia spotlight"
 mvn clean install
 
-echo 'Creating dbpedia-spotlight JAR archive...'
-enter_directory dist
+echo "creating the jar with dependencies"
+cd dist
 mvn clean package
 
-echo 'Creating directory for the indexes...'
-enter_directory ..
-mkdir -p data
+echo "creating a directory to store the indexes..."
+cd ..
 
-echo 'Preparing indexes...'
-enter_directory data
-cp -f $index .
-tar -xvf $index_name
-rm $index_name
+if [ -d data ]
+then
+    echo "moving to data directory"
+else
+    mkdir data
+    echo "making data directory"
+fi
 
-enter_directory $old_pwd
+cd data
 
-echo 'Finished installing'
+if [ -e index-$LANG.tgz ]
+
+then
+    echo "unzipping index ..."
+    tar xzvf index-$LANG.tgz
+    echo "DONE"
+else
+    echo "Copying index..."
+    cp $INDEX .
+    tar xvzf index-$LANG.tgz
+    echo "DONE"
+fi
+
+echo "Installation completed."
