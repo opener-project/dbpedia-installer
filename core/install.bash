@@ -47,8 +47,14 @@ copy_file()
 language=$1
 index=$2
 script_dir=$(dirname $(readlink -f $0))
-dbpedia_git="https://github.com/dbpedia-spotlight/dbpedia-spotlight.git"
+
+# DBpedia configuration settings, these should only be changed for new releases
+# of DBpedia.
+dbpedia_version="0.6"
+dbpedia_tar="release-${dbpedia_version}.tar.gz"
+dbpedia_url="https://github.com/dbpedia-spotlight/dbpedia-spotlight/archive/${dbpedia_tar}"
 dbpedia_dir="${script_dir}/dbpedia-spotlight"
+
 old_pwd=$(pwd)
 
 if [[ -z "${language}" ]]
@@ -80,7 +86,14 @@ then
         abort 'Git (http://git-scm.com/) is not installed, aborting...'
     fi
 
-    git clone $dbpedia_git $dbpedia_dir
+    wget $dbpedia_url
+
+    tar -xvf $dbpedia_tar --directory=$script_dir
+
+    mv $script_dir/dbpedia-spotlight-release-$dbpedia_version \
+        $script_dir/dbpedia-spotlight
+
+    rm $dbpedia_tar
 fi
 
 echo 'Copying Maven configuration files to the dbpedia-spotlight directory...'
