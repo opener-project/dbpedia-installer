@@ -4,7 +4,8 @@
 *.so
 *.so.old
 *.swp
-target
+core/target
+core/dbpedia-spotlight
 *.class
 *.classpath
 *.project
@@ -17,4 +18,3 @@ tmp/*
 pkg/
 Gemfile.lock
 *.swp
-
