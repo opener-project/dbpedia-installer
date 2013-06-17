@@ -1,4 +1,4 @@
-# EHU-DBpedia-Spotlight
+# DBpedia Installer
 
 This repository contains the required changes to the original DBpedia Spotlight
 source code to be able to build your own DBpedia Spotlight for each language within
