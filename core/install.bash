@@ -1,71 +1,98 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-LANG=$1
-INDEX=$2
-SPOTLIGHTDIR="dbpedia-spotlight";
+set -e
 
-cd ..
+##
+# Enters the directory given in the first argument and notifies the user about
+# this.
+#
+# @param [String] $1 The directory to change the current working directory to.
+#
+enter_directory()
+{
+    full_path=$(readlink -f $1)
 
-if [ $# -eq 0 ] || [ $# -eq 1 ]
-  then
-  echo "Not enough arguments supplied; Please supply -lang and index-lang.tgz absolute path as arguments.
-        For example: ./install.bash es /home/user/index-es.tgz"
-  exit 1
-fi
+    echo "Changing PWD to ${full_path}"
+    cd $1
+}
 
-if [ -d $SPOTLIGHTDIR ]
+##
+# Shows the message passed as the first argument and terminates the script.
+#
+# @param [String] $1 The message to display.
+#
+abort()
+{
+    echo $1
+    exit 1
+}
+
+language=$1
+index=$2
+script_dir=$(dirname $(readlink -f $0))
+
+# DBpedia configuration settings, these should only be changed for new releases
+# of DBpedia.
+dbpedia_url="https://github.com/dbpedia-spotlight/dbpedia-spotlight.git"
+dbpedia_dir="${script_dir}/dbpedia-spotlight"
+
+old_pwd=$(pwd)
+
+if [[ -z "${language}" ]]
 then
-    echo "dbpedia spotlight already exists skipping the step of downloading it";
-else
-    echo "downloading dbpedia spotlight";
-    git clone https://github.com/dbpedia-spotlight/dbpedia-spotlight.git
+    abort "You must specify a language as the first argument"
 fi
 
-cd $SPOTLIGHTDIR
-
-if [ -e pom.xml.orig ]
+if [[ -z "${index}" ]]
 then
-    echo "the original pom.xml files have been already replaced, skipping the replacement"
-    cd ..
-else
-    cp pom.xml pom.xml.orig
-    cd ../ixa-dbpedia-spotlight
-    cp conf/server_$LANG.properties ../dbpedia-spotlight/conf/
-    cd ..
+    abort "You must specify an index file as the second argument"
 fi
 
-cd $SPOTLIGHTDIR
-echo "installing the modified dbpedia spotlight"
+if [[ ! -f $index ]]
+then
+    abort "The index file ${index} does not exist"
+# Expand the (potential) relative path to the full path so we can be sure that
+# later on the right file is used.
+else
+    index=$(readlink -f $index)
+    index_name=$(basename $index)
+fi
+
+if [[ ! -d $dbpedia_dir ]]
+then
+    echo 'dbpedia-spotlight directory does not exist, creating...'
+
+    if ! hash git 2>/dev/null
+    then
+        abort 'Git (http://git-scm.com/) is not installed, aborting...'
+    fi
+
+    git clone $dbpedia_url $dbpedia_dir
+fi
+
+echo 'Copying Maven configuration files to the dbpedia-spotlight directory...'
+
+cp -f "${script_dir}/conf/server_${language}.properties" \
+    "${dbpedia_dir}/conf"
+
+echo 'Installing dependencies for all Maven projects...'
+enter_directory $dbpedia_dir
 mvn clean install
 
-echo "creating the jar with dependencies"
-cd dist
+echo 'Creating dbpedia-spotlight JAR archive...'
+enter_directory dist
 mvn clean package
 
-echo "creating a directory to store the indexes..."
-cd ..
+echo 'Creating directory for the indexes...'
+enter_directory ..
+mkdir -p data
 
-if [ -d data ]
-then
-    echo "moving to data directory"
-else
-    mkdir data
-    echo "making data directory"
-fi
+echo 'Preparing indexes...'
+enter_directory data
+cp -f $index .
+tar -xvf $index_name
+rm $index_name
 
-cd data
+enter_directory $old_pwd
 
-if [ -e index-$LANG.tgz ]
-
-then
-    echo "unzipping index ..."
-    tar xzvf index-$LANG.tgz
-    echo "DONE"
-else
-    echo "Copying index..."
-    cp $INDEX .
-    tar xvzf index-$LANG.tgz
-    echo "DONE"
-fi
-
-echo "Installation completed."
+echo 'Finished installing'
