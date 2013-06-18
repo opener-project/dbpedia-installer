@@ -67,7 +67,7 @@ then
         abort 'Git (http://git-scm.com/) is not installed, aborting...'
     fi
 
-    git clone $dbpedia_url $dbpedia_dir
+    git submodule update --init
 fi
 
 echo 'Copying Maven configuration files to the dbpedia-spotlight directory...'

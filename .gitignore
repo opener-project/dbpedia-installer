@@ -5,7 +5,6 @@
 *.so.old
 *.swp
 core/target
-core/dbpedia-spotlight
 *.class
 *.classpath
 *.project
