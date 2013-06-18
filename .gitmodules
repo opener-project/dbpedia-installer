@@ -1,0 +1,3 @@
+[submodule "core/dbpedia-spotlight"]
+	path = core/dbpedia-spotlight
+	url = git@github.com:dbpedia-spotlight/dbpedia-spotlight.git

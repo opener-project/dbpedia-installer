@@ -79,10 +79,6 @@ echo 'Installing dependencies for all Maven projects...'
 enter_directory $dbpedia_dir
 mvn clean install
 
-echo 'Creating dbpedia-spotlight JAR archive...'
-enter_directory dist
-mvn clean package
-
 echo 'Creating directory for the indexes...'
 enter_directory ..
 mkdir -p data
@@ -92,6 +88,10 @@ enter_directory data
 cp -f $index .
 tar -xvf $index_name
 rm $index_name
+
+echo 'Creating dbpedia-spotlight JAR archive...'
+enter_directory ../dist
+mvn clean package
 
 enter_directory $old_pwd
 
