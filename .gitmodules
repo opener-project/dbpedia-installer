@@ -1,3 +1,0 @@
-[submodule "core/dbpedia-spotlight"]
-	path = core/dbpedia-spotlight
-	url = git@github.com:opener-project/dbpedia-installer.git
