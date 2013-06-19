@@ -91,8 +91,10 @@ mvn clean package
 
 echo 'Installing dbpedia-spotlight JAR as a local maven repository...'
 
-mvn install:install-file -Dfile=target/dbpedia-spotlight-0.6-jar-with-dependencies.jar -DgroupId=ixa -DartifactId=dbpedia.spotlight -Dversion=0.6 -Dpackaging=jar -DgeneratePom=true
-
+mvn install:install-file \
+    -Dfile=target/dbpedia-spotlight-0.6-jar-with-dependencies.jar \
+    -DgroupId=ixa -DartifactId=dbpedia.spotlight -Dversion=0.6 \
+    -Dpackaging=jar -DgeneratePom=true
 
 enter_directory "${old_pwd}"
 
