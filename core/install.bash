@@ -75,11 +75,8 @@ echo 'Copying Maven configuration files to the dbpedia-spotlight directory...'
 cp -f "${script_dir}/conf/server_${language}.properties" \
     "${dbpedia_dir}/conf"
 
-echo 'Installing dependencies for all Maven projects...'
-enter_directory "${dbpedia_dir}"
-mvn clean install
-
 echo 'Creating directory for the indexes...'
+enter_directory $dbpedia_dir
 mkdir -p data
 
 echo 'Preparing indexes...'
@@ -91,6 +88,11 @@ rm "${index_name}"
 echo 'Creating dbpedia-spotlight JAR archive...'
 enter_directory ../dist
 mvn clean package
+
+echo 'Installing dbpedia-spotlight JAR as a local maven repository...'
+
+mvn install:install-file -Dfile=target/dbpedia-spotlight-0.6-jar-with-dependencies.jar -DgroupId=ixa -DartifactId=dbpedia.spotlight -Dversion=0.6 -Dpackaging=jar -DgeneratePom=true
+
 
 enter_directory "${old_pwd}"
 
