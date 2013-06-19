@@ -27,9 +27,9 @@ abort()
     exit 1
 }
 
-language=$1
-index=$2
-script_dir=$(dirname $(readlink -f $0))
+language="${1}"
+index="${2}"
+script_dir=$(dirname $(readlink -f "${0}"))
 
 # DBpedia configuration settings, these should only be changed for new releases
 # of DBpedia.
@@ -48,17 +48,17 @@ then
     abort "You must specify an index file as the second argument"
 fi
 
-if [[ ! -f $index ]]
+if [[ ! -f "${index}" ]]
 then
     abort "The index file ${index} does not exist"
 # Expand the (potential) relative path to the full path so we can be sure that
 # later on the right file is used.
 else
-    index=$(readlink -f $index)
-    index_name=$(basename $index)
+    index=$(readlink -f "${index}")
+    index_name=$(basename "${index}")
 fi
 
-if [[ ! -d $dbpedia_dir ]]
+if [[ ! -d "${dbpedia_dir}" ]]
 then
     echo 'dbpedia-spotlight directory does not exist, creating...'
 
@@ -76,23 +76,22 @@ cp -f "${script_dir}/conf/server_${language}.properties" \
     "${dbpedia_dir}/conf"
 
 echo 'Installing dependencies for all Maven projects...'
-enter_directory $dbpedia_dir
+enter_directory "${dbpedia_dir}"
 mvn clean install
 
 echo 'Creating directory for the indexes...'
-enter_directory ..
 mkdir -p data
 
 echo 'Preparing indexes...'
 enter_directory data
-cp -f $index .
-tar -xvf $index_name
-rm $index_name
+cp -f "${index}" .
+tar -xvf "${index_name}"
+rm "${index_name}"
 
 echo 'Creating dbpedia-spotlight JAR archive...'
 enter_directory ../dist
 mvn clean package
 
-enter_directory $old_pwd
+enter_directory "${old_pwd}"
 
 echo 'Finished installing'
