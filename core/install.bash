@@ -33,7 +33,7 @@ script_dir=$(dirname $(readlink -f "${0}"))
 
 # DBpedia configuration settings, these should only be changed for new releases
 # of DBpedia.
-dbpedia_url="https://github.com/dbpedia-spotlight/dbpedia-spotlight.git"
+dbpedia_url="git@github.com:dbpedia-spotlight/dbpedia-spotlight.git"
 dbpedia_dir="${script_dir}/dbpedia-spotlight"
 
 old_pwd=$(pwd)
@@ -67,7 +67,7 @@ then
         abort 'Git (http://git-scm.com/) is not installed, aborting...'
     fi
 
-    git submodule update --init
+    git clone $dbpedia_url "${dbpedia_dir}"
 fi
 
 echo 'Copying Maven configuration files to the dbpedia-spotlight directory...'

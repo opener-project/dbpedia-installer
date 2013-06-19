@@ -68,18 +68,4 @@ instructions for doing this can be found [here][creating-index]. OpeNER members
 can also download pre-created index files for various languages from the OpeNER
 S3 bucket.
 
-## Git Tip
-
-If Git is stating that the core/dbpedia-installer directory has untracked
-changes you can tell Git to ignore these by adding `ignore = dirty` to
-`.git/config` as following:
-
-    ...
-
-    [submodule "core/dbpedia-spotlight"]
-        url    = git@github.com:dbpedia-spotlight/dbpedia-spotlight.git
-        ignore = dirty
-
-    ...
-
 [creating-index]: https://github.com/opener-project/EHU-DBpedia-Spotlight/wiki/DBpedia-Spotlight-Internationalization-for-OpeNER
