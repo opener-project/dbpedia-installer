@@ -85,6 +85,10 @@ cp -f "${index}" .
 tar -xvf "${index_name}"
 rm "${index_name}"
 
+echo 'Installing DBpedia Spotlight...'
+enter_directory ../
+mvn clean install
+
 echo 'Creating dbpedia-spotlight JAR archive...'
 enter_directory ../dist
 mvn clean package
