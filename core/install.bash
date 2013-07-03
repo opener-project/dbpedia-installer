@@ -90,6 +90,7 @@ enter_directory ../
 mvn clean install
 
 echo 'Creating dbpedia-spotlight JAR archive...'
+enter_directory dist
 mvn clean package
 
 echo 'Installing dbpedia-spotlight JAR as a local maven repository...'
