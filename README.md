@@ -51,7 +51,7 @@ Once this has been taken care of you can start the application as following:
     cd core/dbpedia-installer/conf
 
     java -jar \
-        ../dist/target/dbpedia-spotlight-$version-jar-with-dependencies.jar \
+        ../../dbpedia-spotlight/dist/target/dbpedia-spotlight-$version-jar-with-dependencies.jar \
         server_$lang.properties
 
 Here `$version` is the version of dbpedia-spotlight and `$lang` the language
