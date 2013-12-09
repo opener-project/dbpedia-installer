@@ -61,5 +61,5 @@ If you get an error such as `Similarity threshold file
 'similarity-thresholds.txt' not found` it means that you don't have any models in your core directory.
 
 OpeNER members can download pre-created model files and dbpedia-spotlight.jar from the OpeNER
-S3 bucket.
+S3 bucket. Just get the spotlight-statistical directory and place its contents in the core/ directory. 
 
