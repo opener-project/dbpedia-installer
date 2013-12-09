@@ -15,11 +15,11 @@ the dbpedia-spotlight and configuring.
 ## Installation
 
 Assuming you have cloned this repository setting up the dbpedia instance can be
-done by running the script `core/install.bash`. This script takes two
-arguments: a language for the index to use and a Tar archive containing Lucene
-indexes. For example:
+done by running the script `core/install.bash`. This script takes as argument the dbpedia-spotlight.jar: 
 
-    bash core/install.bash en /tmp/index-en.tar.gz
+For example:
+
+    bash core/install.bash dbpedia-spotlight.jar  
 
 The following languages are supported:
 
@@ -30,8 +30,7 @@ The following languages are supported:
 * Italian (it)
 * Spanish (es)
 
-Each language will run on its own port based on the configuration files found
-in `core/conf`. The following ports are used:
+Each language will run on its own port. The following ports are used:
 
 * German: 2010
 * English: 2020
@@ -42,30 +41,25 @@ in `core/conf`. The following ports are used:
 
 ## Running The Application
 
-Before you start make sure that there's a data directory for your indexes in
-`core/dbpedia-installer/data` and that the JAR archive (including all
-dependencies) has been created.
+Before you start make sure that the core/ directory holds: 
+
+* All the models, one for each language untarred.  
+* The dbpedia-spotlight.jar
+* That you have execute the core/install.bash script to create the maven local repository for
+  dbpedia-spotlight.jar. 
 
 Once this has been taken care of you can start the application as following:
 
-    cd core/dbpedia-installer/conf
+    cd core/
 
-    java -jar \
-        ../../dbpedia-spotlight/dist/target/dbpedia-spotlight-$version-jar-with-dependencies.jar \
-        server_$lang.properties
+    java -jar dbpedia-spotlight.jar $lang http://localhost:$port/rest 
 
-Here `$version` is the version of dbpedia-spotlight and `$lang` the language
-configuration file to use.
+Here `$lang` is the language to be used, and $port is the port into which run the server for that
+language, following the list above. 
 
 If you get an error such as `Similarity threshold file
-'similarity-thresholds.txt' not found in index directory ../data/index-en` it
-means that you don't have any proper indexes installed.
+'similarity-thresholds.txt' not found` it means that you don't have any models in your core directory.
 
-## Creating Disambiguation Indexes
-
-In order to actually use the index files you first have to create them. The
-instructions for doing this can be found [here][creating-index]. OpeNER members
-can also download pre-created index files for various languages from the OpeNER
+OpeNER members can download pre-created model files and dbpedia-spotlight.jar from the OpeNER
 S3 bucket.
 
-[creating-index]: https://github.com/opener-project/EHU-DBpedia-Spotlight/wiki/DBpedia-Spotlight-Internationalization-for-OpeNER
