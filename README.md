@@ -15,11 +15,11 @@ the dbpedia-spotlight and configuring.
 ## Installation
 
 Assuming you have cloned this repository setting up the dbpedia instance can be
-done by running the script `core/install.bash`. This script takes as argument the dbpedia-spotlight.jar: 
+done by running the script `core/install.sh`. This script takes as argument the dbpedia-spotlight-$version.jar: 
 
 For example:
 
-    bash core/install.bash dbpedia-spotlight.jar  
+    ./core/install.sh dbpedia-spotlight-$version.jar  
 
 The following languages are supported:
 
@@ -44,15 +44,15 @@ Each language will run on its own port. The following ports are used:
 Before you start make sure that the core/ directory holds: 
 
 * All the models, one for each language untarred.  
-* The dbpedia-spotlight.jar
+* The dbpedia-spotlight-$version.jar
 * That you have execute the core/install.bash script to create the maven local repository for
-  dbpedia-spotlight.jar. 
+  dbpedia-spotlight-$version.jar. 
 
 Once this has been taken care of you can start the application as following:
 
     cd core/
 
-    java -jar dbpedia-spotlight.jar $lang http://localhost:$port/rest 
+    java -jar dbpedia-spotlight-$version.jar $lang http://localhost:$port/rest 
 
 Here `$lang` is the language to be used, and $port is the port into which run the server for that
 language, following the list above. 
@@ -60,6 +60,6 @@ language, following the list above.
 If you get an error such as `Similarity threshold file
 'similarity-thresholds.txt' not found` it means that you don't have any models in your core directory.
 
-OpeNER members can download pre-created model files and dbpedia-spotlight.jar from the OpeNER
-S3 bucket. Just get the spotlight-statistical directory and place its contents in the core/ directory. 
+OpeNER members can download pre-created model files and dbpedia-spotlight-$version.jar from the OpeNER
+S3 bucket. Just get the s3://opener/spotlight-statistical-$version/ directory and place its contents in the core/ directory. 
 
